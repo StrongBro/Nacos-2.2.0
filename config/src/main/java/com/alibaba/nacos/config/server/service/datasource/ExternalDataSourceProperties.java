@@ -39,12 +39,16 @@ public class ExternalDataSourceProperties {
     private static final String TEST_QUERY = "SELECT 1";
     
     private Integer num;
-    
+
+    private String jdbcDriverName;
+
     private List<String> url = new ArrayList<>();
     
     private List<String> user = new ArrayList<>();
     
     private List<String> password = new ArrayList<>();
+
+    public void setJdbcDriverName(String jdbcDriverName) {this.jdbcDriverName = jdbcDriverName;}
     
     public void setNum(Integer num) {
         this.num = num;
@@ -79,7 +83,12 @@ public class ExternalDataSourceProperties {
             int currentSize = index + 1;
             Preconditions.checkArgument(url.size() >= currentSize, "db.url.%s is null", index);
             DataSourcePoolProperties poolProperties = DataSourcePoolProperties.build(environment);
-            if (StringUtils.isEmpty(poolProperties.getDataSource().getDriverClassName())) {
+//            if (StringUtils.isEmpty(poolProperties.getDataSource().getDriverClassName())) {
+//                poolProperties.setDriverClassName(JDBC_DRIVER_NAME);
+//            }
+            if (StringUtils.isNotEmpty(this.jdbcDriverName)) {
+                poolProperties.setDriverClassName(this.jdbcDriverName);
+            }else{
                 poolProperties.setDriverClassName(JDBC_DRIVER_NAME);
             }
             poolProperties.setJdbcUrl(url.get(index).trim());
