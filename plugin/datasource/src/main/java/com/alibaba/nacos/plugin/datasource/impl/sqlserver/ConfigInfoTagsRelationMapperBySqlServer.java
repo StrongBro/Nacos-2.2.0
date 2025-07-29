@@ -30,7 +30,7 @@ import java.util.Map;
  * @author hyx
  **/
 
-public class ConfigInfoTagsRelationMapperBySQLServer extends AbstractMapper implements ConfigTagsRelationMapper {
+public class ConfigInfoTagsRelationMapperBySqlServer extends AbstractMapper implements ConfigTagsRelationMapper {
     
     @Override
     public String findConfigInfo4PageCountRows(final Map<String, String> params, int tagSize) {

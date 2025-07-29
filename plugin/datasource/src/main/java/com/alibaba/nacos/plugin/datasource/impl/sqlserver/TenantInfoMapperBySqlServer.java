@@ -27,7 +27,7 @@ import com.alibaba.nacos.plugin.datasource.mapper.TenantInfoMapper;
  * @author hyx
  **/
 
-public class TenantInfoMapperBySQLServer extends AbstractMapper implements TenantInfoMapper {
+public class TenantInfoMapperBySqlServer extends AbstractMapper implements TenantInfoMapper {
     
     @Override
     public String getTableName() {

@@ -26,7 +26,7 @@ import com.alibaba.nacos.plugin.datasource.mapper.GroupCapacityMapper;
  *
  * @author lixiaoshuang
  */
-public class GroupCapacityMapperBySQLServer extends AbstractMapper implements GroupCapacityMapper {
+public class GroupCapacityMapperBySqlServer extends AbstractMapper implements GroupCapacityMapper {
     
     @Override
     public String getTableName() {
