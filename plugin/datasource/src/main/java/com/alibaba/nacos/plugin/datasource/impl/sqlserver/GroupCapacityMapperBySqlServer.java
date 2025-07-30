@@ -83,6 +83,6 @@ public class GroupCapacityMapperBySqlServer extends AbstractMapper implements Gr
     
     @Override
     public String selectGroupInfoBySize() {
-        return "SELECT id, group_id FROM group_capacity WHERE id > ? OFFSET 0 ROWS FETCH NEXT ? ROWS ONLY";
+        return "SELECT id, group_id FROM group_capacity WHERE id > ? ORDER BY id OFFSET 0 ROWS FETCH NEXT ? ROWS ONLY";
     }
 }

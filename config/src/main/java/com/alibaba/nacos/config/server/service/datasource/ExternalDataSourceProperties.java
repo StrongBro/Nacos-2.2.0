@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.alibaba.nacos.common.utils.CollectionUtils.getOrDefault;
+import static com.alibaba.nacos.config.server.utils.LogUtil.FATAL_LOG;
 
 /**
  * Properties of external DataSource.
@@ -33,14 +34,14 @@ import static com.alibaba.nacos.common.utils.CollectionUtils.getOrDefault;
  * @author Nacos
  */
 public class ExternalDataSourceProperties {
-    
+
     private static final String JDBC_DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     
     private static final String TEST_QUERY = "SELECT 1";
     
     private Integer num;
 
-    private String jdbcDriverName;
+    private List<String> driverClassName = new ArrayList<>();
 
     private List<String> url = new ArrayList<>();
     
@@ -48,8 +49,8 @@ public class ExternalDataSourceProperties {
     
     private List<String> password = new ArrayList<>();
 
-    public void setJdbcDriverName(String jdbcDriverName) {
-        this.jdbcDriverName = jdbcDriverName;
+    public void setDriverClassName(List<String> driverClassName) {
+        this.driverClassName = driverClassName;
     }
     
     public void setNum(Integer num) {
@@ -81,13 +82,17 @@ public class ExternalDataSourceProperties {
         Preconditions.checkArgument(Objects.nonNull(num), "db.num is null");
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(user), "db.user or db.user.[index] is null");
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(password), "db.password or db.password.[index] is null");
+        Preconditions.checkArgument(CollectionUtils.isNotEmpty(driverClassName), "db.driverClassName or db.driverClassName.[index] is null");
         for (int index = 0; index < num; index++) {
             int currentSize = index + 1;
             Preconditions.checkArgument(url.size() >= currentSize, "db.url.%s is null", index);
             DataSourcePoolProperties poolProperties = DataSourcePoolProperties.build(environment);
-            if (StringUtils.isNotEmpty(this.jdbcDriverName)) {
-                poolProperties.setDriverClassName(this.jdbcDriverName);
+            String className = driverClassName.get(index);
+            if (StringUtils.isNotEmpty(className)) {
+                FATAL_LOG.info("###########Using driver class name: {}", className);
+                poolProperties.setDriverClassName(className);
             } else {
+                FATAL_LOG.info("###########Using default mysql driver class name: {}", JDBC_DRIVER_NAME);
                 poolProperties.setDriverClassName(JDBC_DRIVER_NAME);
             }
             poolProperties.setJdbcUrl(url.get(index).trim());

@@ -17,6 +17,7 @@
 package com.alibaba.nacos.config.server.service.datasource;
 
 import com.alibaba.nacos.config.server.utils.PropertyUtil;
+import static com.alibaba.nacos.config.server.utils.LogUtil.FATAL_LOG;
 
 /**
  * Datasource adapter.
@@ -24,7 +25,7 @@ import com.alibaba.nacos.config.server.utils.PropertyUtil;
  * @author Nacos
  */
 public class DynamicDataSource {
-    
+
     private DataSourceService localDataSourceService = null;
     
     private DataSourceService basicDataSourceService = null;
@@ -44,12 +45,14 @@ public class DynamicDataSource {
             // In cluster mode, external databases are used by default
             
             if (PropertyUtil.isEmbeddedStorage()) {
+                FATAL_LOG.info("#############Using embedded storage, local data source service will be used.");
                 if (localDataSourceService == null) {
                     localDataSourceService = new LocalDataSourceServiceImpl();
                     localDataSourceService.init();
                 }
                 return localDataSourceService;
             } else {
+                FATAL_LOG.info("############Using external storage, basic data source service will be used.");
                 if (basicDataSourceService == null) {
                     basicDataSourceService = new ExternalDataSourceServiceImpl();
                     basicDataSourceService.init();

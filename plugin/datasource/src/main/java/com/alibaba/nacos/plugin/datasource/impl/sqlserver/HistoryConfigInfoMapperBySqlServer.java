@@ -32,7 +32,7 @@ public class HistoryConfigInfoMapperBySqlServer extends AbstractMapper implement
     @Override
     public String removeConfigHistory() {
         return "DELETE FROM his_config_info WHERE id IN( "
-                + "SELECT id FROM his_config_info WHERE gmt_modified < ? OFFSET 0 ROWS FETCH NEXT ? ROWS ONLY)";
+                + "SELECT id FROM his_config_info WHERE gmt_modified < ? ORDER BY id OFFSET 0 ROWS FETCH NEXT ? ROWS ONLY)";
     }
     
     @Override

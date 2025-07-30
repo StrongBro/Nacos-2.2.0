@@ -94,7 +94,7 @@ public class ConfigInfoTagsRelationMapperBySqlServer extends AbstractMapper impl
             where.append('?');
         }
         where.append(") ");
-        return sql + where + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+        return sql + where + " ORDER BY a.id" + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
     @Override
@@ -139,7 +139,7 @@ public class ConfigInfoTagsRelationMapperBySqlServer extends AbstractMapper impl
         final String group = params.get("group");
         StringBuilder where = new StringBuilder(" WHERE ");
         final String sqlFetchRows =
-                "SELECT a.ID,a.data_id,a.group_id,a.tenant_id,a.app_name,a.content FROM config_info  a LEFT JOIN "
+                "SELECT a.id,a.data_id,a.group_id,a.tenant_id,a.app_name,a.content FROM config_info  a LEFT JOIN "
                         + "config_tags_relation b ON a.id=b.id ";
         
         where.append(" a.tenant_id LIKE ? ");
@@ -164,7 +164,7 @@ public class ConfigInfoTagsRelationMapperBySqlServer extends AbstractMapper impl
             where.append('?');
         }
         where.append(") ");
-        return sqlFetchRows + where + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+        return sqlFetchRows + where + " ORDER BY a.id" + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
     @Override

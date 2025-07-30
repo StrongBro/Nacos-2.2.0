@@ -62,8 +62,10 @@ public class ConfigInfoMapperBySqlServer extends AbstractMapper implements Confi
     
     @Override
     public String findConfigInfoByAppFetchRows(int startRow, int pageSize) {
-        return "SELECT ID,data_id,group_id,tenant_id,app_name,content FROM config_info WHERE tenant_id LIKE ? AND "
-                + "app_name = ?" + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+        return "SELECT id,data_id,group_id,tenant_id,app_name,content FROM config_info WHERE tenant_id LIKE ? AND "
+                + "app_name = ?"
+                + " ORDER BY data_id "
+                + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
     @Override
@@ -73,13 +75,16 @@ public class ConfigInfoMapperBySqlServer extends AbstractMapper implements Confi
     
     @Override
     public String getTenantIdList(int startRow, int pageSize) {
-        return "SELECT tenant_id FROM config_info WHERE tenant_id != '' GROUP BY tenant_id OFFSET " + startRow
-                + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+        return "SELECT tenant_id FROM config_info WHERE tenant_id != '' GROUP BY tenant_id "
+                + " ORDER BY tenant_id "
+                + "OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
     @Override
     public String getGroupIdList(int startRow, int pageSize) {
-        return "SELECT group_id FROM config_info WHERE tenant_id ='' GROUP BY group_id OFFSET " + startRow
+        return "SELECT group_id FROM config_info WHERE tenant_id ='' GROUP BY group_id"
+                + " ORDER BY group_id "
+                + " OFFSET " + startRow
                 + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
@@ -172,7 +177,7 @@ public class ConfigInfoMapperBySqlServer extends AbstractMapper implements Confi
         if (endTime != null) {
             where += " AND gmt_modified <=? ";
         }
-        return sqlFetchRows + where + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+        return sqlFetchRows + where + " ORDER BY id" + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
     @Override
@@ -240,7 +245,7 @@ public class ConfigInfoMapperBySqlServer extends AbstractMapper implements Confi
         if (!StringUtils.isBlank(params.get(CONTENT))) {
             where += " AND content LIKE ? ";
         }
-        return sqlFetchRows + where + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+        return sqlFetchRows + where + " ORDER BY id" + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
     @Override
@@ -280,12 +285,14 @@ public class ConfigInfoMapperBySqlServer extends AbstractMapper implements Confi
         if (StringUtils.isNotBlank(appName)) {
             where.append(" AND app_name=? ");
         }
-        return sql + where + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+        return sql + where + " ORDER BY id" + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
     @Override
     public String findConfigInfoBaseByGroupFetchRows(int startRow, int pageSize) {
-        return "SELECT id,data_id,group_id,content FROM config_info WHERE group_id=? " + "AND tenant_id=?" + " OFFSET "
+        return "SELECT id,data_id,group_id,content FROM config_info WHERE group_id=? " + "AND tenant_id=?"
+                + " ORDER BY id"
+                + " OFFSET "
                 + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
@@ -334,7 +341,7 @@ public class ConfigInfoMapperBySqlServer extends AbstractMapper implements Confi
         if (!StringUtils.isBlank(content)) {
             where.append(" AND content LIKE ? ");
         }
-        return sqlFetchRows + where + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
+        return sqlFetchRows + where + " ORDER BY id " + " OFFSET " + startRow + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
     }
     
     @Override
