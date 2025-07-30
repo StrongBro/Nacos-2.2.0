@@ -82,7 +82,6 @@ public class ExternalDataSourceProperties {
         Preconditions.checkArgument(Objects.nonNull(num), "db.num is null");
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(user), "db.user or db.user.[index] is null");
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(password), "db.password or db.password.[index] is null");
-        Preconditions.checkArgument(CollectionUtils.isNotEmpty(driverClassName), "db.driverClassName or db.driverClassName.[index] is null");
         for (int index = 0; index < num; index++) {
             int currentSize = index + 1;
             Preconditions.checkArgument(url.size() >= currentSize, "db.url.%s is null", index);
